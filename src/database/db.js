@@ -1,6 +1,5 @@
 import mongoos from "mongoose";
-import {DB_MONGOURI} from "../config.js";
-
+import { DB_MONGOURI } from "../config.js";
 
 //conexion a la base de datos
 export const connect = async () => {
@@ -11,4 +10,3 @@ export const connect = async () => {
     console.log(e);
   }
 };
-

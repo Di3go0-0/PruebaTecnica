@@ -1,17 +1,19 @@
 import { Router } from "express";
+import {
+    registerController,
+    loginController,
+    logoutController,
+
+} from '../controllers/auth.controller.js';
+import validateSchema from '../middleware/validateSchema.js';
+import { RegisterSchemaJoi, LoginSchemaJoi } from '../schemas/user.schema.js';
 
 const router = Router();
 
-router.post("/login", (req, res) => {
-    res.json({ message: "Login page" });
-    });
+router.post("/login", loginController);
 
-router.post("/register", (req, res) => {
-    res.json({ message: "Register page" });
-    });
+router.post("/register",validateSchema(RegisterSchemaJoi), registerController)
 
-router.post("/logout", (req, res) => {
-    res.json({ message: "Logout page" });
-    });
+router.post("/logout", logoutController);
 
 export default router;
