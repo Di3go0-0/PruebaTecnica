@@ -1,5 +1,6 @@
 import Proyecto from "../models/project.model.js";
 import Usuario from "../models/user.model.js";
+import Tarea from "../models/task.model.js";
 
 export const createProject = async (req, res) => {
   const { nombre, descripcion, fechaInicio, fechaFin, estado } = req.body;
@@ -132,6 +133,13 @@ export const deleteProject = async (req, res) => {
     if(! project.usuarioId === req.user.id){
       return res.status(403).json({ message: "No tienes permisos para eliminar este proyecto" });
     }
+
+    // Verificar si el proyecto tiene tareas
+    const tareas = await Tarea.findAll({ where: { proyectoId: id } });
+    if (tareas.length > 0) {
+      return res.status(400).json({ message: "No puedes eliminar un proyecto que tiene tareas" });
+    }
+
     await Proyecto.destroy({
       where: { id },
     });

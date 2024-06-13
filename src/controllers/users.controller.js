@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import Proyecto from '../models/project.model.js';
 import bcrypt from 'bcryptjs';
 
 export const getUsers = async (req, res) => {
@@ -55,6 +56,13 @@ export const deleteUser = async (req, res) => {
         if(!user){
             return res.status(404).json({message: "El usuario no existe"});
         }
+
+        // Verificar si el usuario tiene proyectos
+        const proyectos = await Proyecto.findAll({ where: { usuarioId: id } });
+        if (proyectos.length > 0) {
+            return res.status(400).json({message: "No puedes eliminar un usuario que tiene proyectos"});
+        }
+
         await user.destroy();
         res.json({message: "Usuario eliminado correctamente"});
     }catch(error){

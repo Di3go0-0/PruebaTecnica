@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/users.routes.js'
 import projectRoutes from './routes/projects.routes.js'
+import taskRoutes from './routes/task.routes.js'
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cookieParser()); //para que el servidor entienda las cookies que llegan 
 app.use(authRoutes);
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
+app.use('/tasks', taskRoutes )
 
 
 

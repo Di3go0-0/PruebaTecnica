@@ -20,7 +20,7 @@ CREATE TABLE Proyectos (
     FOREIGN KEY (usuarioId) REFERENCES Usuarios(id)
 );
 
-CREATE TABLE Tarea (
+CREATE TABLE Tareas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     descripcion TEXT,
@@ -28,5 +28,5 @@ CREATE TABLE Tarea (
     fechaActualizacion DATE,
     estado ENUM('pendiente', 'en progreso', 'completada') NOT NULL DEFAULT 'pendiente',
     proyectoId INT,
-    FOREIGN KEY (proyectoId) REFERENCES Proyecto(id)
+    FOREIGN KEY (proyectoId) REFERENCES Proyectos(id)
 );
