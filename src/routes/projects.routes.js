@@ -4,7 +4,8 @@ import {
     getProjects,
     getProjectById,
     updateProject,
-    deleteProject
+    deleteProject,
+    seachProjects
 } from "../controllers/project.controller.js";
 import verifyToken from "../middleware/verifyToken.js"
 import validateSchema from '../middleware/validateSchema.js'
@@ -15,10 +16,14 @@ import ROLES from '../utils/roles.js'
 
 const router = Router();
 
-router.post('/',verifyToken([ROLES.ADMIN, ROLES.USER]),validateSchema(ProjectJoi), createProject);
-router.get('/',verifyToken([ROLES.ADMIN, ROLES.USER]), getProjects);
-router.get('/:id',verifyToken([ROLES.ADMIN, ROLES.USER]), getProjectById);
-router.put('/:id',verifyToken([ROLES.ADMIN, ROLES.USER]),validateSchema(ProjectJoi), updateProject);
-router.delete('/:id',verifyToken([ROLES.ADMIN, ROLES.USER]), deleteProject);
+router.use(verifyToken([ROLES.ADMIN, ROLES.USER]));
 
-export default router
+router.post('/', validateSchema(ProjectJoi), createProject);
+router.get('/', getProjects);
+router.get('/search', seachProjects); // /projects/search?type=description&content=first : type es el campo por el que se va a buscar y content es el valor a buscar
+router.get('/:id', getProjectById);
+router.put('/:id', validateSchema(ProjectJoi), updateProject);
+router.delete('/:id', deleteProject);
+
+const projectsRoutes = (app) => app.use("/projects", router);
+export default projectsRoutes;

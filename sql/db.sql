@@ -1,32 +1,32 @@
-CREATE DATABASE IF NOT EXISTS PruebaTecnica;
-USE PruebaTecnica;
+CREATE DATABASE IF NOT EXISTS ApiTechnical;
+USE ApiTechnical;
 
-CREATE TABLE Usuarios (
+CREATE TABLE Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    contrasena VARCHAR(255) NOT NULL, -- almacenará la contraseña hasheada
-    rol ENUM('admin', 'usuario') NOT NULL DEFAULT 'usuario'
+    password VARCHAR(255) NOT NULL, -- almacenará la contraseña hasheada
+    rol ENUM('admin', 'user') NOT NULL DEFAULT 'user'
 );
 
-CREATE TABLE Proyectos (
+CREATE TABLE Projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    descripcion TEXT,
-    fechaInicio DATE,
-    fechaFin DATE,
-    estado ENUM('no iniciado', 'en progreso', 'completado') NOT NULL DEFAULT 'no iniciado',
-    usuarioId INT,
-    FOREIGN KEY (usuarioId) REFERENCES Usuarios(id)
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    startDate DATE,
+    finalDate DATE,
+    state ENUM('No started', 'In progress', 'Completed') NOT NULL DEFAULT 'No started',
+    userId INT,
+    FOREIGN KEY (userId) REFERENCES Users(id)
 );
 
-CREATE TABLE Tareas (
+CREATE TABLE Tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    descripcion TEXT,
-    fechaCreacion DATE,
-    fechaActualizacion DATE,
-    estado ENUM('pendiente', 'en progreso', 'completada') NOT NULL DEFAULT 'pendiente',
-    proyectoId INT,
-    FOREIGN KEY (proyectoId) REFERENCES Proyectos(id)
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    creationDate DATE,
+    updateDate DATE,
+    state ENUM('Pending', 'In progress', 'Completed') NOT NULL DEFAULT 'Pending',
+    projectId INT,
+    FOREIGN KEY (projectId) REFERENCES Projects(id)
 );

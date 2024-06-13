@@ -3,17 +3,17 @@ import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
 
 export const registerController = async (req, res) => {
-  const { nombre, email, contrasena, rol } = req.body;
+  const { name, email, password, rol } = req.body;
   try {
     const userFound = await User.findOne({ where: { email: email } });
     if (userFound)
-      return res.status(400).json({ message: "El email ya está registrado" });
+      return res.status(400).json({ message: "The email is already registered" });
 
-    const contrasenaHash = await bcrypt.hash(contrasena, 10);
+    const passwordHash = await bcrypt.hash(password, 10);
     const newUser = new User({
-      nombre,
+      name,
       email,
-      contrasena: contrasenaHash,
+      password: passwordHash,
       rol,
     });
 
@@ -22,9 +22,9 @@ export const registerController = async (req, res) => {
 
     res.status(201).json({
       _id: userSaved._id,
-      nombre: userSaved.nombre,
+      name: userSaved.name,
       email: userSaved.email,
-      contrasena: userSaved.contrasena,
+      password: userSaved.password,
       rol: userSaved.rol,
     });
   } catch (error) {
@@ -33,24 +33,24 @@ export const registerController = async (req, res) => {
 };
 
 export const loginController = async (req, res) => {
-  const { email, contrasena } = req.body;
+  const { email, password } = req.body;
   try {
     const userFound = await User.findOne({ where: { email: email } });
     if (!userFound)
-      return res.status(400).json({ message: "El email no está registrado" });
+      return res.status(400).json({ message: "The email is not registered" });
 
     const matchPassword = await bcrypt.compare(
-      contrasena,
-      userFound.contrasena
+      password,
+      userFound.password
     );
 
     if (!matchPassword)
-      return res.status(400).json({ message: "Contraseña incorrecta" });
+      return res.status(400).json({ message: "Incorrect password" });
 
     const token = await createAccessToken({ id: userFound.id });
     res.cookie("token", token); //guardamos el token en una cookie
 
-    res.status(200).json({ message: "Login exitoso" });
+    res.status(200).json({ message: "Login successful" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -58,5 +58,5 @@ export const loginController = async (req, res) => {
 
 export const logoutController = async (req, res) => {
   res.clearCookie("token");
-  res.status(200).json({ message: "Logout exitoso" });
+  res.status(200).json({ message: "Logout successful" });
 };

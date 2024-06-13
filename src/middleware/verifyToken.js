@@ -4,27 +4,27 @@ import User from "../models/user.model.js";
 const verifyToken = (roles) => async (req, res, next) => {
   try {
     const { token } = req.cookies;
-    if (!token) return res.status(403).json({ message: "No logueado" });
+    if (!token) return res.status(403).json({ message: "Not loggen in" });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.userId = decoded.id;
     const userId = String(req.userId.id);
     const user = await User.findByPk(userId);
-    if (!user) return res.status(404).json({ message: "No autentificado" });
+    if (!user) return res.status(404).json({ message: "Unauthenticated" });
 
     req.user = user;
 
     if (!roles.includes(user.rol)) {
       return res
         .status(403)
-        .json({ message: "No tienes permisos para acceder a este recurso" });
+        .json({ message: "You do not have permissions to access this resource" });
     }
 
     next();
   } catch (error) {
     console.log(error);
-    return res.status(401).json({ message: "No Autorizado" });
+    return res.status(401).json({ message: "Not authorized" });
   }
 };
 

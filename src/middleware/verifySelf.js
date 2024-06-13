@@ -3,7 +3,7 @@ function verifySelf(req, res, next) {
   const userId = req.user.id;
 
   if (Number(id) !== userId) {
-    return res.status(403).json({ message: "No tienes permisos para acceder a este recurso" });
+    return res.status(403).json({ message: "you don't have permissions" });
   }
 
   next();

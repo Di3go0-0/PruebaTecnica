@@ -1,43 +1,43 @@
 import { DataTypes } from "sequelize";
 import sequelize from '../database/db.js';
-import Usuario from './user.model.js';
+import User from './user.model.js';
 
-const Proyecto = sequelize.define('Proyecto', {
+const Project = sequelize.define('Project', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true
   },
-  nombre: {
+  name: {
     type: DataTypes.STRING(255),
     allowNull: false
   },
-  descripcion: {
+  description: {
     type: DataTypes.TEXT
   },
-  fechaInicio: {
+  startDate: {
     type: DataTypes.DATE
   },
-  fechaFin: {
+  finalDate: {
     type: DataTypes.DATE
   },
-  estado: {
-    type: DataTypes.ENUM('no iniciado', 'en progreso', 'completado'),
+  state: {
+    type: DataTypes.ENUM('No started', 'In progress', 'Completed'),
     allowNull: false,
-    defaultValue: 'no iniciado'
+    defaultValue: 'No started'
   },
-  usuarioId: {
+  userId: {
     type: DataTypes.INTEGER,
     references: {
-      model: Usuario,
+      model: User,
       key: 'id'
     }
   }
 }, {
-  tableName: 'Proyectos',
+  tableName: 'Projects',
   timestamps: false
 });
 
-Proyecto.belongsTo(Usuario, { foreignKey: 'usuarioId' });
+Project.belongsTo(User, { foreignKey: 'userId' });
 
-export default Proyecto;
+export default Project;

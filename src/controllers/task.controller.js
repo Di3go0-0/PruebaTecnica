@@ -1,148 +1,140 @@
-import Tarea from "../models/task.model.js";
-import Proyecto from "../models/project.model.js";
-import Usuario from "../models/user.model.js";
+import Task from "../models/task.model.js";
+import Project from "../models/project.model.js";
+import User from "../models/user.model.js";
+import { Op } from 'sequelize';
 
 export const createTask = async (req, res) => {
-  const { nombre, descripcion, estado, proyectoId } = req.body;
+  const { name, description, state, projectId } = req.body;
   try {
-    // Verificar si el proyecto existe
-    const proyecto = await Proyecto.findById(proyectoId);
-    if (!proyecto) {
-      return res.status(404).json({ message: "Proyecto no encontrado" });
+    const project = await Project.findOne({ where: { id: projectId } });
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
     }
 
-    // Verificar si el usuario que creó el proyecto es el mismo que está intentando crear la tarea
-    if (proyecto.usuarioId.toString() !== req.user.id) {
-      return res
-        .status(403)
-        .json({
-          message: "No tienes permiso para crear tareas en este proyecto",
-        });
+    if (project.userId !== req.user.id) {
+      return res.status(403).json({
+        message: "You do not have permission to create a task in this project",
+      });
     }
 
-    const fechaCreacion = Date.now();
-    const fechaActualizacion = Date.now();
+    const creationDate = Date.now();
+    const updateDate = Date.now();
 
-    // Crear una nueva tarea
-    const tarea = new Tarea({
-      nombre,
-      descripcion,
-      estado,
-      fechaCreacion,
-      fechaActualizacion,
-      proyecto: proyectoId,
+    const task = await Task.create({
+      name,
+      description,
+      state,
+      creationDate,
+      updateDate,
+      projectId,
     });
 
-    // Guardar la tarea en la base de datos
-    const savedTask = await tarea.save();
-
-    // Enviar la tarea guardada como respuesta
-    res.json(savedTask);
+    res.json(task);
   } catch (error) {
-    res.status(500).json({ message: "Error al crear la tarea" });
+    res.status(500).json({ message: "Error creating task" });
   }
 };
 
 
 export const getTasks = async (req, res) => {
   try {
-    // Obtener todos los proyectos que pertenecen al usuario
-    const proyectos = await Proyecto.findAll({
-      where: { usuarioId: req.user.id },
+    const tasks = await Task.findAll({
+      include: [{
+        model: Project,
+        where: { userId: req.user.id },
+        attributes: []
+      }]
     });
 
-    // Obtener todos los IDs de los proyectos
-    const proyectoIds = proyectos.map((proyecto) => proyecto.id);
-
-    // Obtener todas las tareas que pertenecen a los proyectos
-    const tareas = await Tarea.findAll({
-      where: { proyectoId: proyectoIds },
-    });
-
-    // Enviar las tareas como respuesta
-    res.json(tareas);
+    res.json(tasks);
   } catch (error) {
-    res.status(500).json({ message: "Error al obtener las tareas" });
+    res.status(500).json({ message: "Error getting tasks" });
   }
 };
 
 export const getTaskById = async (req, res) => {
   const { id } = req.params;
   try {
-    // Obtener la tarea
-    const tarea = await Tarea.findById(id);
-    if (!tarea) {
-      return res.status(404).json({ message: "Tarea no encontrada" });
+    const task = await Task.findOne({ where: { id }, include: Project });
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
     }
 
-    // Obtener el proyecto asociado a la tarea
-    const proyecto = await Proyecto.findById(tarea.proyectoId);
-
-    // Verificar si el usuario que creó el proyecto es el mismo que el usuario logueado
-    if (proyecto.usuarioId.toString() !== req.user.id) {
-      return res.status(403).json({ message: "No tienes permiso para ver esta tarea" });
+    if (task.Project.userId !== req.user.id) {
+      return res.status(403).json({ message: "You do not have permission to get this task " });
     }
 
-    // Enviar la tarea como respuesta
-    res.json(tarea);
+    res.json(task);
   } catch (error) {
-    res.status(500).json({ message: "Error al obtener la tarea" });
+    res.status(500).json({ message: "Error getting task" });
   }
 };
 
 export const updateTask = async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion, estado } = req.body;
+  const { name, description, state } = req.body;
   try {
-    // Obtener la tarea
-    const tarea = await Tarea.findById(id);
-    if (!tarea) {
-      return res.status(404).json({ message: "Tarea no encontrada" });
+    const task = await Task.findOne({ where: { id }, include: Project });
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
     }
 
-    // Obtener el proyecto asociado a la tarea
-    const proyecto = await Proyecto.findById(tarea.proyectoId);
-    
-    // Verificar si el usuario que creó el proyecto es el mismo que el usuario logueado
-    if (proyecto.usuarioId.toString() !== req.user.id) {
-      return res.status(403).json({ message: "No tienes permiso para actualizar esta tarea" });
+    if (task.Project.userId !== req.user.id) {
+      return res.status(403).json({ message: "You don't have permission to update this task" });
     }
 
-    // Actualizar la tarea
-    const fechaActualizacion = Date.now();
-    await Tarea.update({ nombre, descripcion, estado, fechaActualizacion }, { where: { id } });
+    const updateDate = Date.now();
+    await Task.update({ name, description, state, updateDate }, { where: { id } });
 
-    // Enviar un mensaje de éxito
-    res.json({ message: "Tarea actualizada con éxito" });
+    res.json({ message: "Task updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error al actualizar la tarea" });
+    res.status(500).json({ message: "Error updating task" });
   }
 };
-
 
 export const deleteTask = async (req, res) => {
   const { id } = req.params;
   try {
-    // Obtener la tarea
-    const tarea = await Tarea.findById(id);
-    if (!tarea) {
-      return res.status(404).json({ message: "Tarea no encontrada" });
+    const task = await Task.findOne({ where: { id }, include: Project });
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
     }
 
-    // Obtener el proyecto asociado a la tarea
-    const proyecto = await Proyecto.findById(tarea.proyectoId);
-    
-    // Verificar si el usuario que creó el proyecto es el mismo que el usuario logueado
-    if (proyecto.usuarioId.toString() !== req.user.id) {
-      return res.status(403).json({ message: "No tienes permiso para eliminar esta tarea" });
+    if (task.Project.userId !== req.user.id) {
+      return res.status(403).json({ message: "You don't have permission to delete this task " });
     }
 
-    // Eliminar la tarea
-    await Tarea.destroy({ where: { id } });
+    await Task.destroy({ where: { id } });
 
-    // Enviar un mensaje de éxito
-    res.json({ message: "Tarea eliminada con éxito" });
+    res.json({ message: "Task deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error al eliminar la tarea" });
+    res.status(500).json({ message: "Error deleting task" });
+  }
+};
+
+export const searchTasks = async (req, res) => {
+  const { type, content } = req.query;
+  try {
+    let userId = req.user.id; //Obtenemos el id del usuario que está logueado
+    const tasks = await Task.findAll({
+      include: [{
+        model: Project,
+        where: { userId },
+        attributes: []
+      }],
+      where: { 
+        [type]: { 
+          [Op.like]: `%${content.toLowerCase()}%` 
+        }
+      }
+    });
+    if (tasks.length > 0) {
+      res.json(tasks);
+    } else {
+      res.status(404).json({ message: "Tasks not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error searching tasks" });
   }
 };

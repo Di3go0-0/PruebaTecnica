@@ -1,31 +1,29 @@
 import Joi from "joi";
 
-//Como necesitoamos actualizar con el metodo put, podemos usar el mismo esquema que para crear un proyecto
-
 export const ProjectJoi = Joi.object({
-  nombre: Joi.string().required().messages({
-    "string.empty": "El nombre del proyecto está vacío",
-    "any.required": "El nombre del proyecto es obligatorio",
+  name: Joi.string().required().messages({
+    "string.empty": "Project name is empty",
+    "any.required": "Project name is required",
   }),
-  descripcion: Joi.string().required().messages({
-    "string.empty": "La descripción del proyecto está vacía",
-    "any.required": "La descripción del proyecto es obligatoria",
+  description: Joi.string().required().messages({
+    "string.empty": "Project description is empty",
+    "any.required": "Project description is required",
   }),
-  fechaInicio: Joi.date().required().messages({
-    "date.base": "La fecha de inicio no es válida, debe estar en formato YYYY-MM-DD",
-    "any.required": "La fecha de inicio es obligatoria",
+  startDate: Joi.date().required().messages({
+    "date.base": "Start date is not valid, it must be in YYYY-MM-DD format",
+    "any.required": "Start date is required",
   }),
-  fechaFin: Joi.date().required().messages({
-    "date.base": "La fecha de fin no es válida, debe estar en formato YYYY-MM-DD",
-    "any.required": "La fecha de fin es obligatoria",
+  finalDate: Joi.date().required().messages({
+    "date.base": "End date is not valid, it must be in YYYY-MM-DD format",
+    "any.required": "Final date is required",
   }),
-  estado: Joi.string()
-    .valid("no iniciado", "en progreso", "completado")
-    .default("no iniciado")
+  state: Joi.string()
+    .valid("No started", "In progress", "Completed")
+    .default("No started")
     .messages({
-      "string.empty": "El estado del proyecto está vacío",
+      "string.empty": "Project state is empty",
       "any.only":
-        'El estado del proyecto solo puede ser "no iniciado", "en progreso" o "completado"',
+        'Project state can only be "No started", "In progress", or "Completed"',
     }),
-    //No se introduce el usuarioId porque se genera automaticmaente en el controlador con el usuario que está logueado
+    // userId is not included because it is automatically generated in the controller with the logged in user
 });

@@ -2,27 +2,25 @@ import Joi from "joi";
 
 export const TaskSchemaJoi = Joi.object({
   id: Joi.number().integer(),
-  nombre: Joi.string().required().messages({
-    "string.empty": "Introduce el nombre de la tarea",
-    "any.required": "El nombre es obligatorio",
+  name: Joi.string().required().messages({
+    "string.empty": "Please enter the task name",
+    "any.required": "Task name is required",
   }),
-  descripcion: Joi.string().required().messages({
-    "string.empty": "Introduce la descripción de la tarea",
-    "any.required": "La descripción es obligatoria",
+  description: Joi.string().required().messages({
+    "string.empty": "Please enter the task description",
+    "any.required": "Task description is required",
   }),
-  fechaCreacion: Joi.date(),
-  fechaActualizacion: Joi.date(),
-  estado: Joi.string()
-    .valid("pendiente", "en progreso", "completada")
-    .required()
+  creationDate: Joi.date(),
+  updateDate: Joi.date(),
+  state: Joi.string()
+    .valid("Pending", "In progress", "Completed")
+    .default("Pending")
     .messages({
-      "string.empty": "Introduce el estado de la tarea",
       "any.only":
-        'El estado de la tarea debe ser "pendiente", "en progreso" o "completada"',
-      "any.required": "El estado es obligatorio",
+        'Task state must be "Pending", "In progress" or "Completed"'
     }),
-  proyectoId: Joi.number().integer().required().messages({
-    "number.base": "El proyectoId debe ser un número",
-    "any.required": "El proyectoId es obligatorio",
+  projectId: Joi.number().integer().required().messages({
+    "number.base": "ProjectId must be a number",
+    "any.required": "projectId is required",
   }),
 });

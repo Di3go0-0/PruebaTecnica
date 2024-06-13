@@ -1,37 +1,37 @@
 import Joi from 'joi';
 
 const RegisterSchemaJoi = Joi.object({
-  nombre: Joi.string()    // debe ser un string
+  name: Joi.string()    // debe ser un string
     .min(2)               // longitud mínima de 2 caracteres
     .required()           // es obligatorio
     .messages({
-        'string.empty': 'Por favor, introduce tu nombre',
-        'string.min': 'El nombre debe tener al menos {#limit} caracteres',
-        'any.required': 'El nombre es obligatorio',
+        'string.empty': 'Please, enter your name',
+        'string.min': 'The name must be at least 2 characters long',
+        'any.required': 'The name is required',
         }),
   email: Joi.string()     // debe ser un string
     .email()              // debe ser un email válido
     .required()           // es obligatorio
     .messages({
-        'string.empty': 'Por favor, introduce tu email',
-        'string.email': 'El email debe ser un email válido',
-        'any.required': 'El email es obligatorio',
+        'string.empty': 'Please, enter your email',
+        'string.email': 'The email must be a valid email address',
+        'any.required': 'The email is required',
         }),
-  contrasena: Joi.string()    // debe ser un string
+  password: Joi.string()    // debe ser un string
     .trim()                   // quita los espacios en blanco al principio y al final
     .min(6)                   // longitud mínima de 6 caracteres
     .required()               // es obligatorio
     .messages({
-        'string.empty': 'Por favor, introduce tu contraseña',
-        'string.min': 'La contraseña debe tener al menos 6 caracteres',
-        'any.required': 'La contraseña es obligatoria',
+        'string.empty': 'The password is empty',
+        'string.min': 'The password must be at least 6 characters long',
+        'any.required': 'The password is required',
         }),
   rol: Joi.string()    // debe ser un string
-  .valid('usuario', 'admin')  // solo puede ser 'user' o 'admin'
-  .default('usuario')   // por defecto es 'user'
+  .valid('user', 'admin')  // solo puede ser 'user' o 'admin'
+  .default('user')   // por defecto es 'user'
   .messages({
-      'string.empty': 'El rol está vacío',
-      'any.only': 'El rol solo puede ser "user" o "admin"',
+      'string.empty': 'The role is empty',
+      'any.only': 'The role can only be "user" or "admin"',
   }),
 });
 
@@ -40,51 +40,51 @@ const LoginSchemaJoi = Joi.object({
     .email()              // debe ser un email válido
     .required()           // es obligatorio
     .messages({
-        'string.empty': 'Por favor, introduce tu email',
-        'string.email': 'El email debe ser un email válido',
-        'any.required': 'El email es obligatorio',
+        'string.empty': 'Please, enter your email',
+        'string.email': 'The email must be a valid email address',
+        'any.required': 'The email is required',
         }),
-  contrasena: Joi.string()    // debe ser un string
+  password: Joi.string()    // debe ser un string
     .trim()                   // quita los espacios en blanco al principio y al final
     .required()               // es obligatorio
     .min(6)
     .messages({
-        'string.empty': 'Por favor, introduce tu contraseña',
-        'any.required': 'La contraseña es obligatoria',
-        'string.min': 'La contraseña debe tener al menos 6 caracteres',
+        'string.empty': 'Please, enter your password',
+        'any.required': 'The password is required',
+        'string.min': 'The password must be at least 6 characters long',
         })
 });
 
 //Todos los datos solicitados son requeridos ya que se solicitó un PUT, por lo que se espera que se envíen todos los datos del usuario a actualizar.
 const UpdateUserSchemaJoi = Joi.object({
-  nombre: Joi.string()    // debe ser un string
+  name: Joi.string()    // debe ser un string
     .min(2)               // longitud mínima de 2 caracteres
     .required()           // es requerido
     .messages({
-        'string.min': 'El nombre debe tener al menos 2 caracteres',
-        'any.required': 'El nombre es un campo requerido',
+        'string.min': 'The name must be at least 2 characters long',
+        'any.required': 'The name is a required field',
         }),
   email: Joi.string()     // debe ser un string
     .email()              // debe ser un email válido
     .required()           // es requerido
     .messages({
-        'string.email': 'El email debe ser un email válido',
-        'any.required': 'El email es un campo requerido',
+        'string.email': 'The email must be a valid email address',
+        'any.required': 'The email is a required field',
         }),
-  contrasena: Joi.string()    // debe ser un string
+  password: Joi.string()    // debe ser un string
     .trim()                   // quita los espacios en blanco al principio y al final
     .min(6)                   // longitud mínima de 6 caracteres
     .required()               // es requerido
     .messages({
-        'string.min': 'La contraseña debe tener al menos 6 caracteres',
-        'any.required': 'La contraseña es un campo requerido',
+        'string.min': 'The password must be at least 6 characters long',
+        'any.required': 'The password is a required field',
         }),
   rol: Joi.string()    // debe ser un string
-    .valid('usuario', 'admin')  // solo puede ser 'user' o 'admin'
+    .valid('user', 'admin')  // solo puede ser 'user' o 'admin'
     .required()                 // es requerido
     .messages({
-        'any.only': 'El rol solo puede ser "user" o "admin"',
-        'any.required': 'El rol es un campo requerido',
+        'any.only': 'The role can only be "user" or "admin"',
+        'any.required': 'The role is a required field',
     }),
 });
 

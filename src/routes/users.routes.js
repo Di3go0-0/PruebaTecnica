@@ -19,5 +19,6 @@ router.get('/:id',verifyToken([ROLES.ADMIN, ROLES.USER]),verifySelf, getUser);
 router.put('/:id',verifyToken([ROLES.ADMIN, ROLES.USER]),validateSchema(UpdateUserSchemaJoi),verifySelf, updateUser);
 router.delete('/:id',verifyToken([ROLES.ADMIN, ROLES.USER]),verifySelf, deleteUser);
 
+const usersRoutes = (app) => app.use("/users", router);
 
-export default router;
+export default usersRoutes;
