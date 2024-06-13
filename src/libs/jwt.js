@@ -1,17 +1,16 @@
 import jwt from "jsonwebtoken";
-import {JWT_SECRET} from '../config.js'
 
-export function createAccessToken(_id, user) {
+export function createAccessToken(id) {
     return new Promise((resolve, reject) => {
-        const payload = { _id, user };
+        const payload = {id};
         jwt.sign(
             payload,
-            JWT_SECRET,
+            process.env.JWT_SECRET,
+            { expiresIn: '2h' },
             (err, token) => {
                 if (err) reject(err);
                 resolve(token);
             }
         );
     });
-    
 }

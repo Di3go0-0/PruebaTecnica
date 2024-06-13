@@ -27,8 +27,8 @@ const RegisterSchemaJoi = Joi.object({
         'any.required': 'La contraseña es obligatoria',
         }),
   rol: Joi.string()    // debe ser un string
-  .valid('user', 'admin')  // solo puede ser 'user' o 'admin'
-  .default('user')   // por defecto es 'user'
+  .valid('usuario', 'admin')  // solo puede ser 'user' o 'admin'
+  .default('usuario')   // por defecto es 'user'
   .messages({
       'string.empty': 'El rol está vacío',
       'any.only': 'El rol solo puede ser "user" o "admin"',

@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import { createAccessToken } from "../utils/jwt.js";
+import { createAccessToken } from "../libs/jwt.js";
 import sequelize from "../database/db.js";
 
 export const registerController = async (req, res) => {
@@ -48,7 +48,7 @@ export const loginController = async (req, res) => {
     if (!matchPassword)
       return res.status(400).json({ message: "Contraseña incorrecta" });
 
-    const token = await createAccessToken({ id: userFound._id }, userFound);
+    const token = await createAccessToken({ id: userFound.id });
     res.cookie("token", token); //guardamos el token en una cookie
 
     res.status(200).json({ message: "Login exitoso" });
