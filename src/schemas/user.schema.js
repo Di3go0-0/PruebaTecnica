@@ -26,6 +26,13 @@ const RegisterSchemaJoi = Joi.object({
         'string.min': 'La contraseña debe tener al menos 6 caracteres',
         'any.required': 'La contraseña es obligatoria',
         }),
+  rol: Joi.string()    // debe ser un string
+  .valid('user', 'admin')  // solo puede ser 'user' o 'admin'
+  .default('user')   // por defecto es 'user'
+  .messages({
+      'string.empty': 'El rol está vacío',
+      'any.only': 'El rol solo puede ser "user" o "admin"',
+  }),
 });
 
 const LoginSchemaJoi = Joi.object({
@@ -40,10 +47,12 @@ const LoginSchemaJoi = Joi.object({
   contrasena: Joi.string()    // debe ser un string
     .trim()                   // quita los espacios en blanco al principio y al final
     .required()               // es obligatorio
+    .min(6)
     .messages({
         'string.empty': 'Por favor, introduce tu contraseña',
         'any.required': 'La contraseña es obligatoria',
-        }),
+        'string.min': 'La contraseña debe tener al menos 6 caracteres',
+        })
 });
 
 export { RegisterSchemaJoi, LoginSchemaJoi };
