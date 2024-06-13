@@ -1,4 +1,4 @@
-export function verifySelf(req, res, next) {
+function verifySelf(req, res, next) {
   const { id } = req.params;
   const userId = req.user.id;
 
@@ -8,3 +8,4 @@ export function verifySelf(req, res, next) {
 
   next();
 }
+export default verifySelf;

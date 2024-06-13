@@ -9,7 +9,7 @@ CREATE TABLE Usuarios (
     rol ENUM('admin', 'usuario') NOT NULL DEFAULT 'usuario'
 );
 
-CREATE TABLE Proyecto (
+CREATE TABLE Proyectos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     descripcion TEXT,
@@ -17,7 +17,7 @@ CREATE TABLE Proyecto (
     fechaFin DATE,
     estado ENUM('no iniciado', 'en progreso', 'completado') NOT NULL DEFAULT 'no iniciado',
     usuarioId INT,
-    FOREIGN KEY (usuarioId) REFERENCES Usuario(id)
+    FOREIGN KEY (usuarioId) REFERENCES Usuarios(id)
 );
 
 CREATE TABLE Tarea (

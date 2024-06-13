@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
-export const verifyToken = (roles) => async (req, res, next) => {
-  console.log("cookies ", req.cookies);
+const verifyToken = (roles) => async (req, res, next) => {
   try {
     const { token } = req.cookies;
     if (!token) return res.status(403).json({ message: "No logueado" });
@@ -12,7 +11,6 @@ export const verifyToken = (roles) => async (req, res, next) => {
     req.userId = decoded.id;
     const userId = String(req.userId.id);
     const user = await User.findByPk(userId);
-    console.log("id", req.userId);
     if (!user) return res.status(404).json({ message: "No autentificado" });
 
     req.user = user;
@@ -29,3 +27,5 @@ export const verifyToken = (roles) => async (req, res, next) => {
     return res.status(401).json({ message: "No Autorizado" });
   }
 };
+
+export default verifyToken;
