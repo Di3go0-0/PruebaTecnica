@@ -181,7 +181,7 @@ router.get('/:id', getProjectById);
  *               name:
  *                 type: string
  *                 required: false
- *               desctiption:
+ *               description:
  *                 type: string
  *                 required: false
  *               startDate:
