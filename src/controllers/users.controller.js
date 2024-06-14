@@ -35,12 +35,19 @@ export const updateUser = async (req, res) => {
         if(!user){
             return res.status(404).json({message: "The user does not exist"});
         }
-        const passwordHash = await bcrypt.hash(password, 10);
-
-        user.name = name;
-        user.email = email;
-        user.password = passwordHash;
-        user.rol = rol;
+        if (password) {
+            const passwordHash = await bcrypt.hash(password, 10);
+            user.password = passwordHash;
+        }
+        if(name){
+            user.name = name;
+        }
+        if(email){
+            user.email = email;
+        }
+        if(rol){
+            user.rol = rol;
+        }
         await user.save();
         res.status(200).json({message: "User updated successfully"});
     }catch(error){

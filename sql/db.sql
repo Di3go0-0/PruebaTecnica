@@ -31,10 +31,10 @@ CREATE TABLE Tasks (
     FOREIGN KEY (projectId) REFERENCES Projects(id)
 );
 
-
-INSERT INTO Users (name, email, password, rol) VALUES ('Admin', 'admin@example.com', '123456', 'admin');
-INSERT INTO Users (name, email, password, rol) VALUES ('User1', 'user1@example.com', '123456', 'user');
-INSERT INTO Users (name, email, password, rol) VALUES ('User2', 'user2@example.com', '123456', 'user');
+-- Recuerda que la contraseña debe ingresarse hasheada, si no dará problema al momento de inciar sesión
+INSERT INTO Users (name, email, password, rol) VALUES ('Admin', 'admin@example.com', 'passwordHasheada', 'admin');
+INSERT INTO Users (name, email, password, rol) VALUES ('User1', 'user1@example.com', 'passwordHasheada', 'user');
+INSERT INTO Users (name, email, password, rol) VALUES ('User2', 'user2@example.com', 'passwordHasheada', 'user');
 
 INSERT INTO Projects (name, description, startDate, finalDate, state, userId) VALUES ('Project1', 'Description', '2024-06-21', '2024-07-04', 'In progress', 1);
 INSERT INTO Projects (name, description, startDate, finalDate, state, userId) VALUES ('Project2', 'Description', '2024-06-21', '2024-07-04', 'No started', 2);

@@ -110,3 +110,13 @@ export default verifySelf;
 
 ## Variables de entorno
 - Se deja un `.env.example` para que se pueda analizar la estructura de las variabels de entorno
+
+## Usuarios
+- En el campo `rol` hay dos opciones `admin` o `user`, para registrar a un usuario es opcional el campo `rol` ya que por defecto todos los usuarios se registral como `user`, pero si se coloca `rol` se puede registrar como `admin o user`.
+
+    Se hizo de esta forma para poder registrar administradores, ya que en la prueba no se especificaba.
+
+- Tambien al momento de editar usuarios se permite que puedan agregar el campo `rol`, ya que de esta forma podriamos cambiar el rol del usuario, cambe aclarar que se hizo de esta forma ya que en la prueba no se especificó.
+
+    Para aumentar su seguridad deberiamos quitar la opción de actualizar `rol` desde `PUT /users/:id`, y agregar un endpoint para cambiar el rol de un usuario que reciba la id el usuario y el rol, pero a este endpoint solo tendrían acceso los administradores
+

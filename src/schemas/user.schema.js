@@ -58,33 +58,25 @@ const LoginSchemaJoi = Joi.object({
 //Todos los datos solicitados son requeridos ya que se solicitó un PUT, por lo que se espera que se envíen todos los datos del usuario a actualizar.
 const UpdateUserSchemaJoi = Joi.object({
   name: Joi.string()    // debe ser un string
-    .min(2)               // longitud mínima de 2 caracteres
-    .required()           // es requerido
+    .min(2)               // longitud mínima de 2 caracteres         // es requerido
     .messages({
         'string.min': 'The name must be at least 2 characters long',
-        'any.required': 'The name is a required field',
         }),
   email: Joi.string()     // debe ser un string
     .email()              // debe ser un email válido
-    .required()           // es requerido
     .messages({
         'string.email': 'The email must be a valid email address',
-        'any.required': 'The email is a required field',
         }),
   password: Joi.string()    // debe ser un string
     .trim()                   // quita los espacios en blanco al principio y al final
     .min(6)                   // longitud mínima de 6 caracteres
-    .required()               // es requerido
     .messages({
         'string.min': 'The password must be at least 6 characters long',
-        'any.required': 'The password is a required field',
         }),
   rol: Joi.string()    // debe ser un string
     .valid('user', 'admin')  // solo puede ser 'user' o 'admin'
-    .required()                 // es requerido
     .messages({
         'any.only': 'The role can only be "user" or "admin"',
-        'any.required': 'The role is a required field',
     }),
 });
 
