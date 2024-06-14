@@ -120,3 +120,5 @@ export default verifySelf;
 
     Para aumentar su seguridad deberiamos quitar la opción de actualizar `rol` desde `PUT /users/:id`, y agregar un endpoint para cambiar el rol de un usuario que reciba la id el usuario y el rol, pero a este endpoint solo tendrían acceso los administradores
 
+## Estados de Proyectos y tareas
+- Para en manejo de estados de proyectos y tareas se actualiza a través de put /projects/:id o Put /tasks/:id, ya que en la prueba no se especificaba de como se debería hacer. Para optimizar esta parte podríamos crear un endpoint que reciba la id de tarea (y otro endpoint para los proyectos) y enviarle el estado al cual queremos que vaya. 
