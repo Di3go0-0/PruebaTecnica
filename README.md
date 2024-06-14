@@ -299,7 +299,7 @@ Aquí se encuentran los tests para diferentes rutas de la API, organizados por m
 
 ### Comandos para Ejecutar los Tests
 
-Para ejecutar los tests, sigue estos pasos en tu terminal:
+Para ejecutar los tests (Debian), sigue estos pasos en tu terminal:
 
 ```bash
 set -x NODE_OPTIONS --experimental-vm-modules
