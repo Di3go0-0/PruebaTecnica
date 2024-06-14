@@ -76,9 +76,11 @@ export const getProjectById = async (req, res) => {
   }
 };
 
+
 export const updateProject = async (req, res) => {
   const { id } = req.params;
   const { name, description, startDate, finalDate, state } = req.body;
+  console.log(req.body);
 
   try {
     const result = await Project.update(
@@ -93,28 +95,37 @@ export const updateProject = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    const updatedProject = result[1][0];
+    if (startDate !== undefined) {
+      if (result[1] && result[1][0]) {
+        const updatedProject = result[1][0];
 
-    // Convert the dates to JavaScript Date objects
-    const startDateDate = new Date(updatedProject.startDate);
-    const finalDateDate = new Date(updatedProject.finalDate);
-    const currentDate = new Date();
+        // Convert the dates to JavaScript Date objects
+        const startDateDate = new Date(updatedProject.startDate);
+        const finalDateDate = new Date(updatedProject.finalDate);
+        const currentDate = new Date();
 
-    // Remove the hours, minutes, seconds and milliseconds
-    currentDate.setHours(0, 0, 0, 0);
-    startDateDate.setHours(0, 0, 0, 0);
-    finalDateDate.setHours(0, 0, 0, 0);
+        // Remove the hours, minutes, seconds and milliseconds
+        currentDate.setHours(0, 0, 0, 0);
+        startDateDate.setHours(0, 0, 0, 0);
+        finalDateDate.setHours(0, 0, 0, 0);
 
-    // Verify that the start date is equal to or later than the current date
-    if (startDateDate < currentDate) {
-      return res.status(400).json({
-        message: "The start date must be equal to or later than the current date",
-      });
-    }
+        // Verify that the start date is equal to or later than the current date
+        if (startDateDate < currentDate) {
+          return res.status(400).json({
+            message:
+              "The start date must be equal to or later than the current date",
+          });
+        }
 
-    // Verify that the end date is later than the start date
-    if (finalDateDate <= startDateDate) {
-      return res.status(400).json({ message: "The end date must be later than the start date" });
+        // Verify that the end date is later than the start date
+        if (finalDateDate <= startDateDate) {
+          return res
+            .status(400)
+            .json({ message: "The end date must be later than the start date" });
+        }
+      } else {
+        return res.status(500).json({ message: "Error updating project" });
+      }
     }
 
     res.status(200).json({ message: "Project updated successfully" });

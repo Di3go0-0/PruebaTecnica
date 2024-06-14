@@ -27,3 +27,27 @@ export const ProjectJoi = Joi.object({
     }),
     // userId is not included because it is automatically generated in the controller with the logged in user
 });
+
+export const UpdateProjectJoi = Joi.object({
+  name: Joi.string().messages({
+    "string.empty": "Project name is empty",
+  }),
+  description: Joi.string().messages({
+    "string.empty": "Project description is empty",
+  }),
+  startDate: Joi.date().messages({
+    "date.base": "Start date is not valid, it must be in YYYY-MM-DD format",
+  }),
+  finalDate: Joi.date().messages({
+    "date.base": "End date is not valid, it must be in YYYY-MM-DD format",
+  }),
+  state: Joi.string()
+    .valid("No started", "In progress", "Completed")
+    .default("No started")
+    .messages({
+      "string.empty": "Project state is empty",
+      "any.only":
+        'Project state can only be "No started", "In progress", or "Completed"',
+    }),
+    // userId is not included because it is automatically generated in the controller with the logged in user
+});
