@@ -129,4 +129,18 @@ describe("[ routes / users]", () => {
       expect(verifyResponse.status).toBe(404);
     });
   });
+  describe("Update User Schema validation", () => {
+    it("should fail the update user schema validation", async () => {
+      const requestBody = {
+        name: "a", // name is too short
+        email: "not an email", // not a valid email
+        password: "123", // password is too short
+        rol: "invalid role" // not a valid role
+      };
+  
+      const response = await request.post("/users").send(requestBody);
+
+      expect(response.status).toBe(400);
+    });
+  });
 });

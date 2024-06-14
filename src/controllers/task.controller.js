@@ -46,7 +46,7 @@ export const getTasks = async (req, res) => {
       }]
     });
 
-    res.json(tasks);
+    res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: "Error getting tasks" });
   }
@@ -64,7 +64,7 @@ export const getTaskById = async (req, res) => {
       return res.status(403).json({ message: "You do not have permission to get this task " });
     }
 
-    res.json(task);
+    res.status(200).json(task);
   } catch (error) {
     res.status(500).json({ message: "Error getting task" });
   }
@@ -86,7 +86,7 @@ export const updateTask = async (req, res) => {
     const updateDate = Date.now();
     await Task.update({ name, description, state, updateDate }, { where: { id } });
 
-    res.json({ message: "Task updated successfully" });
+    res.status(200).json({ message: "Task updated successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error updating task" });
   }
@@ -106,7 +106,7 @@ export const deleteTask = async (req, res) => {
 
     await Task.destroy({ where: { id } });
 
-    res.json({ message: "Task deleted successfully" });
+    res.status(200).json({ message: "Task deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting task" });
   }
@@ -129,7 +129,7 @@ export const searchTasks = async (req, res) => {
       }
     });
     if (tasks.length > 0) {
-      res.json(tasks);
+      res.status(200).json(tasks);
     } else {
       res.status(404).json({ message: "Tasks not found" });
     }

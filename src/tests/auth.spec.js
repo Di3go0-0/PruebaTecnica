@@ -9,7 +9,6 @@ beforeEach(() => {
   request = testServer(authRoutes);
 });
 
-
 describe("[ routes / ]", () => {
   describe("Registration", () => {
     it("should register a user successfully", async () => {
@@ -83,5 +82,31 @@ describe("[ routes / ]", () => {
     // Assert
     expect(response.status).toEqual(expectedStatus);
     expect(response.body.message).toEqual(expectedMessage);
+  });
+  describe("Registration schema", () => {
+    it("should fail the registration schema validation", async () => {
+      const requestBody = {
+        name: "a", // name is too short
+        email: "not an email", // not a valid email
+        password: "123", // password is too short
+      };
+
+      const response = await request.post("/register").send(requestBody);
+
+      expect(response.status).toBe(400);
+    });
+  });
+
+  describe("Login schema", () => {
+    it("should fail the login schema validation", async () => {
+      const requestBody = {
+        email: "not an email", // not a valid email
+        password: "123", // password is too short
+      };
+
+      const response = await request.post("/login").send(requestBody);
+
+      expect(response.status).toBe(400);
+    });
   });
 });

@@ -24,3 +24,25 @@ export const TaskSchemaJoi = Joi.object({
     "any.required": "projectId is required",
   }),
 });
+
+export const UpdateTaskSchemaJoi = Joi.object({
+  id: Joi.number().integer(),
+  name: Joi.string().messages({
+    "string.empty": "Please enter the task name",
+  }),
+  description: Joi.string().messages({
+    "string.empty": "Please enter the task description",
+  }),
+  creationDate: Joi.date(),
+  updateDate: Joi.date(),
+  state: Joi.string()
+    .valid("Pending", "In progress", "Completed")
+    .default("Pending")
+    .messages({
+      "any.only":
+        'Task state must be "Pending", "In progress" or "Completed"'
+    }),
+  projectId: Joi.number().integer().messages({
+    "number.base": "ProjectId must be a number",
+  }),
+});
