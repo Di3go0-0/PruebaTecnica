@@ -35,7 +35,7 @@ export const createProject = async (req, res) => {
       state,
       userId,
     });
-    res.json(project);
+    res.status(201).json(project);
   } catch (error) {
     res.status(500).json({ message: "Error creating Project" });
   }
@@ -48,7 +48,7 @@ export const getProjects = async (req, res) => {
       where: { userId },
       include: User,
     });
-    res.json(projects);
+    res.status(200).json(projects);
   } catch (error) {
     res.status(500).json({ message: "Error getting projects" });
   }
@@ -65,7 +65,7 @@ export const getProjectById = async (req, res) => {
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
-    res.json(project);
+    res.status(200).json(project);
   } catch (error) {
     res.status(500).json({ message: "Error getting project" });
   }
@@ -116,7 +116,7 @@ export const updateProject = async (req, res) => {
       { name, description, startDate, finalDate, state },
       { where: { id } }
     );
-    res.json({ message: "Project updated successfully" });
+    res.status(201).json({ message: "Project updated successfully" });
   }catch(error){
     res.status(500).json({ message: "Error updating the project" });
   }
@@ -143,7 +143,7 @@ export const deleteProject = async (req, res) => {
     await Project.destroy({
       where: { id },
     });
-    res.json({ message: "Project deleted successfully" });
+    res.status(200).json({ message: "Project deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting the project" });
   }
@@ -163,7 +163,7 @@ export const seachProjects = async (req, res) => {
       include: User,
     });
     if (projects.length > 0) {
-      res.json(projects);
+      res.status(200).json(projects);
     } else {
       res.status(404).json({ message: "Projects not found" });
     }

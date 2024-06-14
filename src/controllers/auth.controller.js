@@ -47,7 +47,7 @@ export const loginController = async (req, res) => {
     if (!matchPassword)
       return res.status(400).json({ message: "Incorrect password" });
 
-    const token = await createAccessToken({ id: userFound.id });
+    const token = await createAccessToken({ email: email });
     res.cookie("token", token); //guardamos el token en una cookie
 
     res.status(200).json({ message: "Login successful" });

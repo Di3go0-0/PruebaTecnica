@@ -8,9 +8,9 @@ const verifyToken = (roles) => async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.userId = decoded.id;
-    const userId = String(req.userId.id);
-    const user = await User.findByPk(userId);
+    req.userEmail = decoded.email;
+    const userEmail = req.userEmail;
+    const user = await User.findOne({ where: { email: userEmail } });
     if (!user) return res.status(404).json({ message: "Unauthenticated" });
 
     req.user = user;

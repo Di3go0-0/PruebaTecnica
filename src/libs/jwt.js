@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 
-export function createAccessToken(id) {
+export function createAccessToken(email) {
     return new Promise((resolve, reject) => {
-        const payload = {id};
+        const payload = email;
         jwt.sign(
             payload,
             process.env.JWT_SECRET,

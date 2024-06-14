@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 export const getUsers = async (req, res) => {
     try{
         const users = await User.findAll();
-        res.json(users);
+        res.status(200).json(users);
     }catch(error){
         console.log(error);
         res.status(500).json({message: error.message});
@@ -19,8 +19,8 @@ export const getUser = async (req, res) => {
         const user = await User.findByPk(id);
         if(!user){
             return res.status(404).json({message: "The user does not exist"});
-        }
-        res.json(user);
+        } // Este estado nunca deberia ocurrir, ya que el unico que puede acceder a sus datos, es el propio usuario, por loque esta oblicado a existir
+        res.status(200).json(user);
     }catch(error){
         console.log(error);
         res.status(500).json({message: error.message});
@@ -42,7 +42,7 @@ export const updateUser = async (req, res) => {
         user.password = passwordHash;
         user.rol = rol;
         await user.save();
-        res.json(user);
+        res.status(200).json({message: "User updated successfully"});
     }catch(error){
         console.log(error);
         res.status(500).json({message: error.message});
@@ -58,13 +58,13 @@ export const deleteUser = async (req, res) => {
         }
 
         // Verificar si el usuario tiene proyectos
-        const porjects = await Project.findAll({ where: { usuarioId: id } });
+        const porjects = await Project.findAll({ where: { userId: id } });
         if (porjects.length > 0) {
             return res.status(400).json({message: "The user has projects, it cannot be deleted"});
         }
 
         await user.destroy();
-        res.json({message: "User deleted successfully"});
+        res.status(200).json({message: "User deleted successfully"});
     }catch(error){
         console.log(error);
         res.status(500).json({message: error.message});
