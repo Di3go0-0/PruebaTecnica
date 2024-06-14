@@ -1,14 +1,18 @@
-import swaggerJsDoc from "swagger-jsdoc";
+import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-
 
 const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Aplicación gestion de proyectos",
+      title: "Aplicación gestión de proyectos",
       version: "1.0.0",
     },
+    servers: [
+      {
+        url: "http://localhost:3000",
+      },
+    ],
     components: {
       schemas: {
         User: {
@@ -115,15 +119,17 @@ const options = {
       },
     },
   },
-  apis: ["./routes/auth.routes.js"], // path to the API files
+  apis: [
+    "src/routes/auth.routes.js",
+    "src/routes/users.routes.js",
+    "src/routes/projects.routes.js",,
+    "src/routes/task.routes.js"
+  ], // path to the API files
 };
 
-const swaggerSpec = swaggerJsDoc(options);
+const swaggerSpec = swaggerJsdoc(options);
 
-const saggerDocs = (app, port) => {
-  app.use('api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-
-  console.log('Swagger running on http://localhost:' + port + '/api/docs')
-}
-
-export default saggerDocs;
+export default (app) => {
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  console.log("Swagger initialized in /api-docs");
+};

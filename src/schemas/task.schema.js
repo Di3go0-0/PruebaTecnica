@@ -10,8 +10,6 @@ export const TaskSchemaJoi = Joi.object({
     "string.empty": "Please enter the task description",
     "any.required": "Task description is required",
   }),
-  creationDate: Joi.date(),
-  updateDate: Joi.date(),
   state: Joi.string()
     .valid("Pending", "In progress", "Completed")
     .default("Pending")
@@ -33,8 +31,6 @@ export const UpdateTaskSchemaJoi = Joi.object({
   description: Joi.string().messages({
     "string.empty": "Please enter the task description",
   }),
-  creationDate: Joi.date(),
-  updateDate: Joi.date(),
   state: Joi.string()
     .valid("Pending", "In progress", "Completed")
     .default("Pending")
